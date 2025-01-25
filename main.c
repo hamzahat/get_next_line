@@ -3,23 +3,29 @@
 #include <stdio.h>
 void f()
 {
-    system("leaks test_gnl");
+    system("leaks a.out");
 }
 
 int main(void)
 {
+   atexit(f);
     int fd = open("file.txt", O_RDONLY);
     if (fd == -1)
         return (1);
     char *line;
-    while ((line = get_next_line(fd)))
-    {
-        printf("%s", line);
-        free(line);
-    }
+    line = get_next_line(0);
+    printf("%s", line);
+    free(line);
+    line = get_next_line(0);
+    printf("%s", line);
+    free(line);
+    // while ((line = get_next_line(fd)))
+    // {
+    //     printf("%s", line);
+    //     free(line);
+    // }
     close(fd);
-
-//    atexit(f);
+    fflush(stdout);
     
     return (0);
 }
