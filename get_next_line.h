@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:35:45 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/01/24 23:16:43 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/01/26 12:10:00 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <limits.h>
 
 # ifndef BUFFER_SIZE
-#   define BUFFER_SIZE 5
+#   define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);

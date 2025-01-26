@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:33:52 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/01/24 23:16:36 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:57:05 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char *final_line(char *line_buffer)
 	if (line_buffer[i] == 0 || line_buffer[1] == 0)
 		return (NULL);
 	static_buf = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - i);
-	if (!*static_buf)
+	if (static_buf && !*static_buf)
 	{
 		free(static_buf);
 		static_buf = NULL;
@@ -35,23 +35,21 @@ static char *final_line(char *line_buffer)
 
 static char	*catch_the_newline(int fd, char *static_buf, char *buffer)
 {
-	ssize_t	readen;
-	char	*tmp;
+	ssize_t	bytes_read;
 
-	readen = 1;
-	while (readen > 0)
+	bytes_read = 1;
+	while (bytes_read)
 	{
-		readen = read(fd, buffer, BUFFER_SIZE);
-		if (readen == -1)
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
 		{
 			free(static_buf);
 			return (NULL);
 		}
-		else if (readen == 0)
+		else if (bytes_read == 0)
 			break ;
-		buffer[readen] = 0;
+		buffer[bytes_read] = 0;
 		static_buf = ft_strjoin(static_buf, buffer);
-		tmp = NULL;
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
