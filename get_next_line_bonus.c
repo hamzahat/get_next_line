@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:33:52 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/01/30 15:49:03 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:49:47 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*final_line(char **line_buffer)
 {
@@ -60,27 +60,27 @@ static char	*catch_the_newline(int fd, char *static_buf, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*static_buf;
+	static char	*static_buf[OPEN_MAX];
 	char		*line;
 	char		*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0 \
 			|| BUFFER_SIZE > INT_MAX)
 	{
-		free(static_buf);
-		static_buf = NULL;
+		free(static_buf[fd]);
+		static_buf[fd] = NULL;
 		return (NULL);
 	}
 	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	line = catch_the_newline(fd, static_buf, buffer);
+	line = catch_the_newline(fd, static_buf[fd], buffer);
 	free(buffer);
 	buffer = NULL;
 	if (!line)
 		return (NULL);
-	static_buf = final_line(&line);
+	static_buf[fd] = final_line(&line);
 	if (!line)
-		return (free(static_buf), NULL);
+		return (free(static_buf[fd]), NULL);
 	return (line);
 }
