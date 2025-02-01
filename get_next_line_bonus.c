@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 20:33:52 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/01/30 19:56:42 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/02/01 19:03:35 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,11 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0 \
 			|| BUFFER_SIZE > INT_MAX)
 	{
-		free(static_buf[fd]);
-		static_buf[fd] = NULL;
+		if (fd >= 0 && fd < OPEN_MAX)
+		{
+			free(static_buf[fd]);
+			static_buf[fd] = NULL;
+		}
 		return (NULL);
 	}
 	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
@@ -76,7 +79,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = catch_the_newline(fd, static_buf[fd], buffer);
 	free(buffer);
-	buffer = NULL;
 	if (!line)
 		return (NULL);
 	static_buf[fd] = final_line(&line);
